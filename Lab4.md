@@ -250,11 +250,27 @@ Before doing this, you might have asked yourself: don't we need to initialize I2
 
         xReturned = xTaskCreate( prvAccSensorReaderTask,
                                 "BMA222",
-                                TEMP_TASK_STACK_SIZE,
+                                ACCEL_TASK_STACK_SIZE,
                                 ( void * ) &taskParameter_accelerometer,
-                                TEMP_TASK_PRIORITY,
+                                ACCEL_TASK_PRIORITY,
                                 NULL );
     }
+   ```
+   
+   As we did in the last lab, we need to add the declares for ```ACCEL_TASK_STACK_SIZE``` and ```ACCEL_TASK_PRIORITY```.  You can place them directly beneath ```TEMP_TASK_STACK_SIZE``` and ```TEMP_TASK_PRIORITY```.  The result will look like the following.
+   
+   ```c	
+   ...
+
+   static MQTTAgentHandle_t xMQTTHandle = NULL;
+
+   #define TEMP_TASK_STACK_SIZE                ( configMINIMAL_STACK_SIZE * 7 )
+   #define TEMP_TASK_PRIORITY                  ( tskIDLE_PRIORITY )
+
+   #define ACCEL_TASK_STACK_SIZE               ( configMINIMAL_STACK_SIZE * 7 )
+   #define ACCEL_TASK_PRIORITY                 ( tskIDLE_PRIORITY )
+
+   ...
    ```
 
 #### Adding Semaphore Check to Temperature Task
@@ -274,7 +290,7 @@ After the fourth line in the ```while(1)``` loop, wrap the I2C_transfer call.  A
         }
 ```
 
-Why is the ```xSemaphoreGive``` call not directly beneath the instruction for manipulating the 
+Why is the ```xSemaphoreGive``` call not directly beneath the instruction for manipulating the temperature receive buffers?  The reason is if the transfer didn't happen successfully, then the semaphore would not be released - potentially making it so the lock would never be released for other tasks.  Be careful of these conditions that can rarely fail - subsequently masking potential production problems.
 
 #### Running the code
 
