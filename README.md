@@ -22,7 +22,7 @@ In this lab, you will download the Amazon FreeRTOS sample code from AWS IoT, imp
 
 ### Lab 3: Using AWS IoT Core
 
-In this lab, you will program Amazon FreeRTOS to use the sensors on the CC3220SF-LAUNCHXL board. First, you will be able to get the temperature sensor readings from the board and send to AWS IoT Core. Next, you will get the accelerometer sensor readings and send to AWS IoT Core. You will then learn how to use Rules Engine to send data to AWS IoT Analytics and view the data on Amazon QuickSight.
+In this lab, you will program Amazon FreeRTOS to use the sensors on the CC3220SF-LAUNCHXL board. First, you will be able to get the temperature sensor readings from the board and send to AWS IoT Core. Next, you will get the accelerometer sensor readings and send to AWS IoT Core. You will then learn how to use Rules Engine to send data to AWS IoT Analytics to prepare for downstream visualization software.
 
 [![Lab3](images/lab3.png)](./Lab3.md "Lab 3")
 
