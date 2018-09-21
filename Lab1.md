@@ -68,8 +68,7 @@ After Python installation, ensure that you install Pip and then the AWS CLI.
 
 If you are using Mac OSX, continue to the next section.
 
-##### Configuration
-
+TBD - windows installation and configuration instructions.
 
 
 ##### AWS CLI Installation and Configuration
@@ -113,8 +112,11 @@ Git software is recommended but not required.  If you install and setup Git, you
 
 On Mac OSX, Git is already installed on your system.
 
-For Windows, you have two choices for installing Git.  
+For Windows, you have two choices for installing Git from Github.
 
+* [Github Desktop](https://desktop.github.com/) - recommended for first time users
+* [Git for Windows](https://gitforwindows.org/) - Most recommended (by author) for windows users, includes MINGW shell
+* [SCM Git](https://git-scm.com/download/win) - recommended only for those who are experienced with git and have a pre-existing windows shell environment they are comfortable with.
 
 ### Registering Your Device
 
@@ -306,12 +308,6 @@ Create the AWS IoT policy.
 aws iot create-policy \
     --policy-name ${THING_NAME}_Policy \
     --policy-document file://${THING_NAME}_policy.json
-```
-
-Create a variable with the ```policyArn``` for use later in this module.
-
-```shell
-POLICY_ARN=arn:aws:iot:us-east-1:012345678910:policy/GH1_Policy
 ```
 
 #### Associate the Thing and Policy to Certificate
