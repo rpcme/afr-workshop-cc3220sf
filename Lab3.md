@@ -216,17 +216,42 @@ Finally, we will do something interesting with the data by taking the data and p
     
 ### Test the Temperature Task
 
+At this point, the Temperature task has been implemented and is ready to run.
+
+1. Open the AWS Console.
+2. From the menu bar, click on Services > IoT Core.
+3. On the lower left hand side, click Test.
+4. For the subscription topic, enter ```#``` and click Subscribe.
+5. In CCS, perform a Clean by running ```Project``` > ```Clean...``` and clicking the **Clean** button.  A full build should occur automatically after the clean.
+6. Press the Debug button.
+7. Click the Start button after the cursor runs to the ```main()``` breakpoint.
+8. View the output in the IoT Console.
+
+What you will see is the output from both the Echo demo task and the Temperature task.  Let's remove that task creation to not only clean up the output but remove unnecessary cycles taken from the MCU. 
 
 ### Remove the Echo Demo Publishing
 
+In this section, we will remove the ```xCreateTask``` call for the original Echo task that came with the demonstration.
 
-### Capture and Display Analytics
+1. Using CCS, navigate the cursor to the ```void vStartMQTTEchoDemo( void )``` function.
+2. Scroll to the end of the function.  You will notice the ```xCreateTask``` call that starts the Echo demo.  It looks like the following.
+
+   ```c
+        ( void ) xTaskCreate( prvMQTTConnectAndPublishTask,        /* The function that implements the demo task. */
+                              "MQTTEcho",                          /* The name to assign to the task being created. */
+                              democonfigMQTT_ECHO_TASK_STACK_SIZE, /* The size, in WORDS (not bytes), of the stack to allocate for the task being created. */
+                              NULL,                                /* The task parameter is not being used. */
+                              democonfigMQTT_ECHO_TASK_PRIORITY,   /* The priority at which the task being created will run. */
+                             NULL );                              /* Not storing the task's handle. */
+   ```
+3. Select the xTaskCreate call, and click delete.
+
+
+### Capture and Prepare to Display Analytics
 
 In this section, you will learn how to simply capture and display telemetry data for dashboarding.  Although this process does not display graphical results in near-real-time, what it does do is help you understand how to organize your data for better long term analytical persuits -- a means to help answer the question of what kinds of problems you can solve with IoT data.
 
 AWS IoT Analytics is all about capture-act-store, where you setup a channel to ingest data, setup actions to clean up or enhance data, and then store data in an AWS IoT Analytics managed repository.
-
-Amazon QuickSight is all about displaying analytical data.  Data becomes refreshed about every five minutes due to Business Intelligence (BI) data transformation the service performs in the background.
 
 #### Setup CloudWatch Logging
 
@@ -261,17 +286,21 @@ Next, we need to setup the analytics ingest point.
 
 #### Setting up the AWS IoT Analytics Pipeline
 
-Pipeline ID : myTemperaturePipeline
-Pipeline source: select mytemperaturecollector
-click next
-Set the temperature, timestamp, and d (device id) attributes.  In a later section, we will learn how to add a timestamp attribute to the payload.  From the previous sections, you know that we are sending only temperature and device identifier.
-Click Next
-Click Next
-For Pipeline output, click the link **Create new data store**.
-For the data store, enter myTemperatureStore.
-Click the 	**Create data store** button.
-Click the **Create pipeline** button.
+In this section, we create a Pipeline (without any actions) to connect the ingest channel to the data store.
 
+1. On the left hand side, click Prepare and then Pipelines. Click the button to begin creating a new pipeline.
+2. For the **Pipeline ID**, enter **myTemperaturePipeline**.
+3. For the **Pipeline source**, select **mytemperaturecollector**.
+4. Click **Next**.
+5. Set the temperature, timestamp, and d (device id) attributes.  In a later section, we will learn how to add a timestamp attribute to the payload.  From the previous sections, you know that we are sending only temperature and device identifier.
+
+	**ADD IMAGE HERE**
+6. Click Next
+7. Click Next
+8. For **Pipeline output**, click the link **Create new data store**.
+9. For the data store, enter **myTemperatureStore**.
+10. Click the 	**Create data store** button.
+11. Click the **Create pipeline** button.
 
 
 #### Editing the IoT Rule to get Timestamp
@@ -294,39 +323,49 @@ When we created a channel, a Rule was create in AWS IoT Analytics.  We will slig
    What we are doing here is running a Rules Engine builtin to insert the value on the fly.
 6. Click the Update button.
 
-
-
 #### Creating the Data Set
 
-The data set defines a sql query for accessing the data in the data store. In the AWS IoT Analytics console, on the left hand side, click Analyze and then **Data sets**.  In the content panel, click the **Create a data set** button.
+The data set defines a SQL query for accessing the data in the data store.
 
-Click the **Create SQL** button.
+1. In the AWS IoT Analytics console, on the left hand side, click Analyze and then **Data sets**.
+2. In the content panel, click the **Create a data set** button.
+3. Click the **Create SQL** button.
+4. For id, enter mytemperaturedataset.
+5. For Select data store source, select mytemperaturestore.
+6. Click Next.
+7. For **Author SQL Query**, enter the following query. It creates a dataset for a specific sensor.
 
-for id, enter mytemperaturedataset
-for Select data store source, select mytemperaturestore.
-click Next.
-Author SQL Query -> SELECT temperature, timestamp FROM mytemperaturestore WHERE d = '9884e3f60411'
+   ```sql
+   SELECT temperature, timestamp FROM mytemperaturestore WHERE d = '[YOUR_MAC_ADDRESS]'
+   ```
+   
+   Replace [YOUR_MAC_ADDRESS] with the MAC address on your board.  For example:
+   
+   ```sql
+   SELECT temperature, timestamp FROM mytemperaturestore WHERE d = '9884e3f60411'
+   ```
+   
+   Click Next.
+8. Set the **Data selection window** to **None**.  Click Next.
+9. For Set query schedule (optional) set the Frequency to **Not scheduled**. Click **Next**.
+10. For Configure the results of your analytics, Retain data set content == Indefinitely
+11. Click the **Create data set** button.  Clicking the button does not automatically run the dataset.  You have to either manually run it or set it to a schedule.
+12. In the datasets window, click mytemperaturedataset
+12. Under the **Actions** drop-down, click **Run now**.
 
-Data selection window == None
-
-for Set query schedule (optional), Frequency == Not scheduled. Click next.
-For Configure the results of your analytics, Retain data set content == Indefinitely
-Click the **Create data set** button
-
-In the datasets window, click mytemperaturedataset
-Under actions, click Run now.
-
-After some time, the data set will be constructed.
+After some time, the data set will be constructed.  It may take five minutes or more.
 
 #### Viewing the dataset
 
-After the dataset is constructed, you can download it as a CSV File.
+After the dataset is constructed, you can download it as a CSV File.  The data is also available through the AWS API.
 
-In the datasets window, click mytemperaturedataset
-on the left hand side, click CSV.
-for the particular run, click Download.
+To view the dataset, perform the following.
+
+1. In the datasets window, click **mytemperaturedataset**.
+2. On the left hand side, click **CSV**.
+3. For the particular run, click Download.  If there is nothing to download yet, and you are sure that you have performed the **Run now** function in the previous section, wait a couple minutes and then refresh.  The initial dataset could still be generating.
+
 You can now view the run data in Excel or other text editing tool.
-
 
 ### Outcomes
 
