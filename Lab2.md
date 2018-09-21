@@ -12,13 +12,18 @@ From your Home directory, check out the sources.
 1. Open a console window on your workstation to perform work on the command line.
 2. Clone the repository.
 ```
-git clone https://github.com/rpcme/afr-workshop-cc3220sf
+git clone --recursive https://github.com/rpcme/afr-workshop-cc3220sf
 ```
 3. In your HOME directory, you should now have two directories: ```aws-iot``` and ```afr-workshop-cc3220sf```.
 
-Alternatively, if you don't have git or you don't want to clone the repository, simply download the site as ZIP and unzip.  Note that this will make synchronizing with future updates more challenging.
-
 From this point onward, and throughout the remaining labs, the repository checkout directory is referred to as ```LAB_REPOPATH```.
+
+Alternatively, if you don't have git or you don't want to clone the repository (which is the best option, perform these steps:
+
+1. Navigate to https://github.com/rpcme/afr-workshop-cc3220sf.
+2. Download the repository as ZIP.  Extract.  This will be known as ```LAB_REPOPATH```.
+3. Navigate to https://github.com/aws/amazon-freertos.
+4. Download the repository as ZIP.  Extract to ```LAB_REPOPATH/amazon-freertos```.  ```LAB_REPOPATH/amazon-freertos``` should have ```demos```, ```lib```, ```tests```, and ```tools``` directories.
 
 ### Open and Build the Amazon FreeRTOS Sample Project
 
