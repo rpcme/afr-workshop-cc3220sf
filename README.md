@@ -2,18 +2,15 @@
 
 ### Lab 1: Setup the Environment
 
-In this lab, you will download the tools needed for the subsequent
-sections. You can use the provided USB and let the download run in the
-background. You will then register your TI CC3220SF-LAUNCHXL with AWS
-IoT Core.
+In this lab, you will download the tools needed for the subsequent sections. You can use the provided USB and let the download run in the background. You will then register your Texas Instruments CC3220SF-LAUNCHXL with AWS IoT Core.
 
 Registering your device involves:
 
 - Creating a Policy
 - Creating a Thing
-- Generating the X.509 certificates for your CC3220SF-LAUNCHXL to
-  communicate with AWS IoT Core services
-- Attaching the Policy to the certificates
+- Generating the X.509 certificate for your CC3220SF-LAUNCHXL to
+  communicate with AWS IoT Core
+- Attaching the Policy and Thing to the Certificate
 
 [![Lab1](images/lab1.png)](./Lab1.md "Lab 1")
 
