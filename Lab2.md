@@ -12,9 +12,11 @@ From your Home directory, check out the sources.
 1. Open a console window on your workstation to perform work on the command line.
 2. Clone the repository.
 ```
-git clone https://.../afr-workshop-cc3220sf
+git clone https://github.com/rpcme/afr-workshop-cc3220sf
 ```
 3. In your HOME directory, you should now have two directories: ```aws-iot``` and ```afr-workshop-cc3220sf```.
+
+Alternatively, if you don't have git or you don't want to clone the repository, simply download the site as ZIP and unzip.  Note that this will make synchronizing with future updates more challenging.
 
 From this point onward, and throughout the remaining labs, the repository checkout directory is referred to as ```LAB_REPOPATH```.
 
