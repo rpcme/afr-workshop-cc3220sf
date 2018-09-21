@@ -18,6 +18,38 @@ A register in the sensor holds the temperature reading.  In order to retrieve it
 
 Finally, we will do something interesting with the data by taking the data and pushing it to AWS IoT Analytics.  In this lab we will use AWS IoT Analytics to store data so it can be easily displayed by your visualization of choice.  We will demonstrate how to get large datasets from AWS IoT Analytics.
 
+### Remove the Echo Demo Task
+
+In this section, we will remove the ```xCreateTask``` call for the original Echo task that came with the demonstration.
+
+1. Using CCS, navigate the cursor to the ```void vStartMQTTEchoDemo( void )``` function.
+2. Scroll to the end of the function.  You will notice the ```xCreateTask``` call that starts the Echo demo.  It looks like the following.
+
+   ```c
+        ( void ) xTaskCreate( prvMQTTConnectAndPublishTask,        /* The function that implements the demo task. */
+                              "MQTTEcho",                          /* The name to assign to the task being created. */
+                              democonfigMQTT_ECHO_TASK_STACK_SIZE, /* The size, in WORDS (not bytes), of the stack to allocate for the task being created. */
+                              NULL,                                /* The task parameter is not being used. */
+                              democonfigMQTT_ECHO_TASK_PRIORITY,   /* The priority at which the task being created will run. */
+                              NULL );                              /* Not storing the task's handle. */
+   ```
+3. Select the xTaskCreate call, and click delete.
+
+### Roll back GPIO Pin configurations
+
+In the last lab, we enabled pin configurations to use the GPIO LEDs.  Since we are about to use I2C, we need to remove those pin configurations from the array.
+
+1. In CCS8, open ```application_code``` > ```ti_code``` > ```CC3220SF_LAUNCHXL.c```.
+2. Scroll to line 225, for pin configuration ```GPIO_PinConfig gpioPinConfigs[]```.
+3. The changes are done to the last four elements in the array, so the array will look like the following.
+
+   ```c
+    /* CC3220SF_LAUNCHXL_GPIO_LED_D6, */
+    GPIOCC32XX_GPIO_10 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_HIGH | GPIO_CFG_OUT_LOW,
+    /* CC3220SF_LAUNCHXL_GPIO_LED_D5, */
+    GPIOCC32XX_GPIO_11 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_HIGH | GPIO_CFG_OUT_LOW,
+   ```
+ 
 ### The Temperature Task
 
 1. Scroll to the bottom of ```aws_hello_world.c```.  Your cursor should be beneath the function you implemented in Lab 2: ```prvMacForHumans```.
@@ -30,7 +62,7 @@ Finally, we will do something interesting with the data by taking the data and p
    #define TEMPERATURE_TASK_TMP_REGISTER   0x0001
    ```
    The first ```#define``` is the sensor's I2C address.  The last one, inferred by its name, is the register to be read from the sensor to acquire the temperature data.  Note this is not a "raw number", it is a couple of bit data fields we will need to manipulate in code.
-3. Implement the 
+3. Implement the **TODO THIS NEEDS TO BE BROKEN OUT AND EXPLAINED**
 
    ```c
    static void prvTempSensorReaderTask( void * pvParameters )
@@ -165,6 +197,7 @@ Finally, we will do something interesting with the data by taking the data and p
       ```c
           configPRINTF( ( "Creating MQTT Echo Task...\r\n" ) );
           BaseType_t xReturned;
+          I2C_init();
       ```	
 7. Add the temperature task ```xCreateTask``` call to the ```void vStartMQTTEchoDemo( void )``` function.  As you might recall, in the temperature task we relied on task parameters to pass along the topic name for publishing the JSON payload to the AWS Cloud.
    
@@ -175,10 +208,13 @@ Finally, we will do something interesting with the data by taking the data and p
        {
            configPRINTF( ( "Creating MQTT Echo Task...\r\n" ) );
            BaseType_t xReturned;
+           I2C_init();
            xMQTTTaskParameter taskParameter_temperature;
     
            ...
    ```
+   
+   At the same time, remove the ```GPIO_write()``` calls.
 
 9. Move the cursor back to the ```void vStartMQTTEchoDemo( void )``` function.  Beneath the configASSERT statement, add the following code.
 
@@ -227,24 +263,7 @@ At this point, the Temperature task has been implemented and is ready to run.
 7. Click the Start button after the cursor runs to the ```main()``` breakpoint.
 8. View the output in the IoT Console.
 
-What you will see is the output from both the Echo demo task and the Temperature task.  Let's remove that task creation to not only clean up the output but remove unnecessary cycles taken from the MCU. 
 
-### Remove the Echo Demo Publishing
-
-In this section, we will remove the ```xCreateTask``` call for the original Echo task that came with the demonstration.
-
-1. Using CCS, navigate the cursor to the ```void vStartMQTTEchoDemo( void )``` function.
-2. Scroll to the end of the function.  You will notice the ```xCreateTask``` call that starts the Echo demo.  It looks like the following.
-
-   ```c
-        ( void ) xTaskCreate( prvMQTTConnectAndPublishTask,        /* The function that implements the demo task. */
-                              "MQTTEcho",                          /* The name to assign to the task being created. */
-                              democonfigMQTT_ECHO_TASK_STACK_SIZE, /* The size, in WORDS (not bytes), of the stack to allocate for the task being created. */
-                              NULL,                                /* The task parameter is not being used. */
-                              democonfigMQTT_ECHO_TASK_PRIORITY,   /* The priority at which the task being created will run. */
-                             NULL );                              /* Not storing the task's handle. */
-   ```
-3. Select the xTaskCreate call, and click delete.
 
 
 ### Capture and Prepare to Display Analytics
