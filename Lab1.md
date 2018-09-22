@@ -244,7 +244,7 @@ Using the Terminal Window, change directory to the certificate and key working d
 
 Generate the client certificate and key.  This command is cross-platform.  The command will generate a lot of output.  There is one key output we require for future operation: the ```certificateArn``` property.  We can narrow the output using the ```--query``` flag.
 
-> ```shell
+> ```bash
 > aws iot create-keys-and-certificate --set-as-active \
 >     --certificate-pem-outfile    ${THING_NAME}_certificate.pem \
 >     --public-key-outfile         ${THING_NAME}_public_key.pem  \
@@ -254,10 +254,9 @@ Generate the client certificate and key.  This command is cross-platform.  The c
 
 Download the Root CA.
 
-```shell
+```bash
 wget -O rootca.pem \
      https://www.symantec.com/content/en/us/enterprise/verisign/roots/VeriSign-Class%203-Public-Primary-Certification-Authority-G5.pem
-popd
 ```
 
 At the top of the output, locate the =certificateArn= property. Copy the value, which has a pattern of ```arn:aws:iot:<region>:<accountId>:cert/<certificateId>```. You will use this value when you attach the Policy to the Certificate.  It will look similar to the following:
