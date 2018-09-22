@@ -225,9 +225,9 @@ In the previous section, you acquired the MAC Address of the device.  The Thing 
 #### *Optional*: Verifying Thing Creation in the AWS Console 
 
 1. Login to the AWS Console.
-2. Select the Region that is defined in the AWS credential =configuration= file.
-3. Click Services > IoT.
-4. Click the Thing filter.
+2. Select the Region that is defined in the AWS credential ```configuration``` file.
+3. Click ```Services``` > ```IoT Core```.
+4. Click the **Manage** menu item on the left hand side, and then click **Things**.
 5. Manually identify that the Thing has been created.
 
 #### Create the Device Certificate
