@@ -13,10 +13,11 @@ In this lab, you will accomplish the following:
 
 ### Create an AWS Account
 
-This lab, and all other labs, require an AWS account. To create an AWS Account, follow the instructions on the https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/ AWS website.
+This lab, and all other labs, require an AWS account. To create an AWS Account, follow the [instructions on the AWS website](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/).
 
 ### Install Required Software
 
+Note on the USB stick: on some Windows computers, you may be prohibited from running the installer from the USB drive.  If you get an error executing the installer, copy the installer to C:\Temp and then run it from C:\Temp.
 
 #### Texas Instruments Code Composer Studio
 
@@ -159,7 +160,8 @@ The MAC address composition that may be familiar to you has the format XX:XX:XX:
 
 Another challenge is how to retrieve the MAC address when it's printed neither on the MCU nor the development board.  In this case, we can use Texas Instruments Uniflash.
 
-1. Open the Uniflash utility.  For Mac OSX, it is located under Applications > ti > uniflash_4.3.0 > UniFlash 4.3.0.  For Windows, it is located under (TBD)
+1. Open the Uniflash utility.  For Mac OSX, it is located under ```Applications``` > ```ti``` > ```uniflash_4.4.0``` > ```UniFlash 4.4.0```.  For Windows, it is located under ```Start``` > ```Texas Instruments``` > ```UniFlash```.
+
 2. Move the SOP jumper to position 2.
 
    ![SOP](images/Lab1/full_board_SOP.png)
