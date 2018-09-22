@@ -306,7 +306,7 @@ Create the AWS IoT policy.
 
 ```bash
 aws iot create-policy \
-    --policy-name ${THING_NAME}_Policy \
+    --policy-name ${POLICY_NAME} \
     --policy-document file://${THING_NAME}_policy.json
 ```
 
