@@ -192,9 +192,9 @@ Another challenge is how to retrieve the MAC address when it's printed neither o
 
 **NOTE**: This project will be reused in Lab 5.  Do not delete the project.
 
-#### Create the 'Thing' Virtual Devices.
+#### Create the Thing Object
 
-In this step, you will create a Thing - an object representation of your device in the AWS IoT Core Device Registry.
+In this step, you will create the Thing object - a representation of your device in the AWS IoT Core Device Registry.
 
 In the previous section, you acquired the MAC Address of the device.  The Thing Name will be the MAC Address, but the colons need to be removed.
 
