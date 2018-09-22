@@ -118,6 +118,29 @@ For Windows, you have two choices for installing Git from Github.
 * [Git for Windows](https://gitforwindows.org/) - Most recommended (by author) for windows users, includes MINGW shell
 * [SCM Git](https://git-scm.com/download/win) - recommended only for those who are experienced with git and have a pre-existing windows shell environment they are comfortable with.
 
+### Initializing the Repository
+
+In this section, you will learn the physical directory layout for Amazon FreeRTOS.  You will clone the git repository that include the Code Composer Studio projects and a reference to Amazon FreeRTOS as a git repository submodule.
+
+From your Home directory, check out the sources.
+
+1. Open a console window on your workstation to perform work on the command line.
+2. Clone the repository.
+```
+git clone --recursive https://github.com/rpcme/afr-workshop-cc3220sf
+```
+3. In your HOME directory, you should now have two directories: ```aws-iot``` and ```afr-workshop-cc3220sf```.
+
+From this point onward, and throughout the remaining labs, the repository checkout directory is referred to as ```LAB_REPOPATH```.
+
+Alternatively, if you don't have git or you don't want to clone the repository (which is the best option, perform these steps:
+
+1. Navigate to https://github.com/rpcme/afr-workshop-cc3220sf.
+2. Download the repository as ZIP.  Extract.  This will be known as ```LAB_REPOPATH```.
+3. Navigate to https://github.com/aws/amazon-freertos.
+4. Download the repository as ZIP.  Extract to ```LAB_REPOPATH/amazon-freertos```.  ```LAB_REPOPATH/amazon-freertos``` should have ```demos```, ```lib```, ```tests```, and ```tools``` directories.
+
+
 ### Registering Your Device
 
 Throughout these Labs, the primary interface for working with the AWS Cloud is the command line.
