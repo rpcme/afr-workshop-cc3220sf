@@ -39,6 +39,29 @@ Windows: for install directory, leave default ```C:\ti```
 
 For **Processor Support**, choose **SimpleLink(tm) Wi-Fi(R) CC32xx Wireless MCUs**.
 
+#### Texas Instruments SimpleLink™ Wi-Fi® CC3220 Software Development Kit (SDK)
+
+Texas Instruments SimpleLink™ Wi-Fi® CC3220 Software Development Kit (SDK) is required to complete the labs.
+
+> USB Stick
+> > 1. Insert the USB Memory Stick to your laptop.  If you are taking this lab outside from a sponsored AWS event, download the software from Texas Instruments.
+> > 2. Locate the directory for your target platform. If you are running Windows, enter the ```windows``` directory.  If you are running MacOSX, enter the macosx directory.
+> > Double-click the installer.
+>
+> Download
+> > **NOTE** if you are at an AWS sponsored event and received the USB key, please do not download the payload from the internet.
+> > 
+> > 1. Navigate to the [	SIMPLELINK-CC3220-SDK Download Page](http://www.ti.com/tool/simplelink-cc3220-sdk).
+> > 2. For Part Number **	SIMPLELINK-CC3220-SDK**, click the **Get Software** button to the right.
+> > 3. If you are not logged into your TI account, login.  If you do not have an account, you must create one.  Once logged in, you are presented with the download page.  Download the installer for your target platform.  
+> > 4. Double-click the downloaded installer.
+
+Windows: for install directory, leave default ```C:\ti```
+
+
+
+
+
 #### Texas Instruments Uniflash
 
 Texas Instruments Uniflash 4.4.0 is required to complete the labs.
@@ -107,17 +130,17 @@ You need to get AWS programmatic access credentials to configure the AWS CLI.
 Now, enter ```aws configure``` once more.  Enter the Access Key, Secret Key, Region (us-east-1), and format (json) when prompted. 
 
 
-#### Git (recommended)
+#### Git
 
-Git software is recommended but not required.  If you install and setup Git, you will be able to perform ```diff``` and ```status``` operations in the source tree that will help you understand what has changed in the source tree over time.
+Git software is required.
+
+For Windows specifically, the labs require [Git for Windows](https://gitforwindows.org/).    
+
+When you install and setup Git, you will be able to clone repositories as well as perform ```diff``` and ```status``` operations in the local source tree that will help you understand what has changed in the source over time.
 
 On Mac OSX, Git is already installed on your system.
 
-For Windows, you have two choices for installing Git from Github.
-
-* [Github Desktop](https://desktop.github.com/) - recommended for first time users
-* [Git for Windows](https://gitforwindows.org/) - Most recommended (by author) for windows users, includes MINGW shell
-* [SCM Git](https://git-scm.com/download/win) - recommended only for those who are experienced with git and have a pre-existing windows shell environment they are comfortable with.
+On Windows, install Git for Windows](https://gitforwindows.org/), which includes the MINGW shell environment that integrates nicely with the Windows environment. This will enable you to use Python 2.7 from the command line within a UNIX-like environment, which will simplify working through the labs.
 
 ### Initializing the Repository
 
@@ -164,16 +187,19 @@ Another challenge is how to retrieve the MAC address when it's printed neither o
 
 2. Move the SOP jumper to position 2.
 
-   ![SOP](images/Lab1/full_board_SOP.png)
+   <img src="images/Lab1/full_board_SOP.png" alt="drawing" style="width:600px;"/>
+
 3. Attach the CC3220SF board to your computer.
 
    ![Cable]((images/Lab1/
 4. Click the Start button.
 
-   ![Start](images/Lab1/uniflash_after_cable_connect.png)
+   <img src="images/Lab1/uniflash_after_cable_connect.png" alt="drawing" style="width:600px;"/>
+
 5. Click New Project.
 
-   ![Start](images/Lab1/uniflash_choose_project.png)
+   <img src="images/Lab1/uniflash_choose_project.png" alt="drawing" style="width:600px;"/>
+
 6. Enter information as shown.  Explanation for each input item is listed below the image. 
 
    ![New](images/Lab1/uniflash_project_detail.png)
@@ -203,17 +229,11 @@ In the previous section, you acquired the MAC Address of the device.  The Thing 
 1. Open the Terminal or CMD window.
 2. Set the variable for the Thing name.  If your MAC Address is ```98:84:e3:f6:04:11```, then your Thing Name will be ```9884e3f60411```.
 3. To create the virtual device, issue the following command from the  *terminal window*:
-   > Mac OSX
-   > > ```bash
-   > > THING_NAME=9884e3f60411
-   > > aws iot create-thing --thing-name ${THING_NAME}
-   > > ```
-   >
-   > Windows
-   > > ```shell
-   > > set THING_NAME=9884e3f60411
-   > > aws iot create-thing --thing-name %THING_NAME%
-   > > ```
+   
+   ```bash
+   THING_NAME=9884e3f60411
+   aws iot create-thing --thing-name ${THING_NAME}
+   ```
 
 4. The command line emits the Thing's ARN, which looks similar to the following:
 
@@ -329,9 +349,9 @@ POLICY_NAME=${THING_NAME}_Policy
 Create the AWS IoT policy.
 
 ```bash
-aws iot create-policy \
-    --policy-name ${POLICY_NAME} \
-    --policy-document file://${THING_NAME}_policy.json
+aws iot create-policy                     \
+        --policy-name ${POLICY_NAME}      \
+        --policy-document file://${THING_NAME}_policy.json
 ```
 
 #### Associate the Thing and Policy to Certificate
@@ -340,35 +360,22 @@ Associate the Thing and Policy with the Certificate.  Multiple Policies and Thin
 
 Use the following command line to associate the Thing to the Certificate.
 
-> Mac OSX
-> > ```bash
-> > aws iot attach-thing-principal       \
-> >         --thing-name $THING_NAME     \
-> >         --principal $CERTIFICATE_ARN
-> > ```
-> 
-> Windows
-> > ```shell
-> > aws iot attach-thing-principal^
-> >     --thing-name %THING_NAME%^
-> >     --principal %CERTIFICATE_ARN%
-> > ```
+
+```bash
+aws iot attach-thing-principal             \
+        --thing-name $THING_NAME           \
+        --principal $CERTIFICATE_ARN
+```
+
 
 Use the following command line to associate the Policy to the Certificate.
 
-> Mac OSX
-> > ```bash
-> > aws iot attach-principal-policy \
-> >     --policy-name $POLICY_NAME    \
-> >     --principal $CERTIFICATE_ARN
-> > ```
->
-> Windows
-> > ```shell
-> > aws iot attach-principal-policy^
-> >     --policy-name %POLICY_NAME%^
-> >     --principal %CERTIFICATE_ARN%
-> > ```
+```bash
+aws iot attach-principal-policy            \
+        --policy-name $POLICY_NAME         \
+        --principal $CERTIFICATE_ARN
+```
+
 
 
 At this point, when the client code makes a connection using the Client certificate, theit will be able to perform all AWS IoT actions.
