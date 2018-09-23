@@ -11,7 +11,17 @@ In this section, open the Amazon FreeRTOS Sample Project that serves as the base
 1. Open Code Composer Studio 8.0 (CCS8).  When you first open CCS8, the IDE will prompt your for a workspace location. Choose the default location and check the box "don't ask again".
 2. Import the project.
    1. Open the import dialog by clicking **File > Import...**.
+   2. Expand **Code Composer Studio**, select **CCS Projects**, and click **Next**.
+   3. For 	**Select search-directory**, choose **Browse...**
+   4. Locate the directory ```LAB_REPOPATH```, and then navigate to ```LAB_REPOPATH/demos/ti/cc3220_launchpad/ccs```.  Click Open.
+   5. Ensure that **aws_demos** is checked in the **Discovered projects**.
+   6. Ensure that the **Copy projects into workspace** checkbox is NOT checked.
+   7. Click **Finish**.
 2. Change to the latest compiler version available.
+   1. From the newly imported project, Right-click the folder on the root of the project, and click Properties.
+   2. Select General on the left-hand side.
+   3. In the content panel, under **Tool-chain**, locate Compiler version.
+   4. Drop down the compiler version and choose (at the time of writing the latest available) TI v18.1.3.LTS.
 3. Run a full compile by clicking Project > Build All.
 
 At this point, the project builds but it is not configured properly for connectivity.  In the next section, we will configure the project to run the Hello World demo.
