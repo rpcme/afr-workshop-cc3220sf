@@ -18,16 +18,6 @@ This is the crux of device shadow.  *Active* communication under different conte
 
 This lab gets you started on Device Shadows.  Although we are not doing any actuation, we will update the device shadow, you will see changes in the Console, and perform some action in the AWS Cloud.
 
-### Start the Project
-
-Within the Github project, there is the directory ```lab4/start```.  This is the project where we will be starting the lab.
-
-1. Open Code Composer Studio (CCS).
-2. Open **File** > **Import...**
-3. Select **CCS Projects**.  Click **Next**.
-4. In the Select search-directory radio button item, choose **Browse...**.  Choose ```LAB_REPOPATH/Lab4/start```.
-
-
 ### Organizing the Accelerometer Task
 
 As previously mentioned, tasks help you organize and manage your code in an encapsulated and reusable way.
