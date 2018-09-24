@@ -62,87 +62,110 @@ In the last lab, we enabled pin configurations to use the GPIO LEDs.  Since we a
    #define TEMPERATURE_TASK_TMP_REGISTER   0x0001
    ```
    The first ```#define``` is the sensor's I2C address.  The last one, inferred by its name, is the register to be read from the sensor to acquire the temperature data.  Note this is not a "raw number", it is a couple of bit data fields we will need to manipulate in code.
-3. Implement the **TODO THIS NEEDS TO BE BROKEN OUT AND EXPLAINED**
+3. Implement the ```prvTempSensorReaderTask```.  We will walk through this step by step.
 
+   Here, we are making some local declarations.
    ```c
    static void prvTempSensorReaderTask( void * pvParameters )
-{
-    uint8_t         txBuf[1];       // Register to read
-    uint8_t         rxBuf[2];       // Data received
-    I2C_Transaction i2cTxn;
+   {
+	    uint8_t         txBuf[1];       // Register to read
+	    uint8_t         rxBuf[2];       // Data received
+	    I2C_Transaction i2cTxn;
+	
+	    char cDataBuffer[ 64 ];
+	    xMQTTTaskParameter *pxParameters;
+	    pxParameters = ( xMQTTTaskParameter * ) pvParameters;
+	
+	    float           temperatureC;
+	    float           temperatureF;
+   ```
+   The I2C parameters are initialized to set the bus speed so the I2C controller knows what speed to interpret signals.
+   
+   ```c
+	    /*
+	     *  Create/Open the I2C bus that talks to the TMP sensor
+	     */
+	    I2C_Params      i2cParams;
+	    I2C_Params_init(&i2cParams);
+	    i2cParams.bitRate = I2C_400kHz;
+	```
+	
+	Here, we are initializing the communication with the I2C bus.  You will see from the next lab that this has to be done only once to communicate with all slaves on the I2C bus.
+	
+	If something goes wrong here, something very bad happened.  It could also be that the bus was not configured by the Board configuration code -- the file we changed when enabling and disabling the GPIO PINs for the LEDs.
+	
+	```c
+	    if ( xI2C == NULL )
+	      xI2C = I2C_open( Board_I2C_TMP,  // Defined in Board.h
+	                       &i2cParams );
+	    vTaskDelay( pdMS_TO_TICKS( 7 ) ); // ensure configuration mode completes, 7ms, super magic number
+	
+	    if ( xI2C == NULL ) {
+	      configPRINTF(("CRITICAL: Could not open I2C bus. Reset the board.\r\n"));
+	      while (1);
+	    }
+	```
+	
+	When we communicate with the I2C sensor, we need to define how many character buffers to send, and what to send.  In this case, we are telling the sensor to return back the value of the register at ```TEMPERATURE_TASK_TMP_REGISTER```.  If you look back up as the declarations, you see the ```rxBuf[2]``` declaration.  This should tell you that the sensor will return back two char buffers.
+	
+	```c
+	
+	    txBuf[0] = TEMPERATURE_TASK_TMP_REGISTER;
+	```
+	
+	An important point in this section about something we haven't mentioned - how do we know *which slave* to talk to?  Each sensor has an address assigned to it, and the address must be unique on the bus.  You may also notice when looking at more high end sensors, more than one address is configurable (switchable by mechanics such as pull up on a pin).
+	
+	```c
+	    i2cTxn.slaveAddress = TEMPERATURE_TASK_SENSOR_ADDRESS;
+	    i2cTxn.writeBuf     = txBuf;
+	    i2cTxn.writeCount   = 1;
+	    i2cTxn.readBuf      = rxBuf;
+	    i2cTxn.readCount    = 2;
+	```
 
-    char cDataBuffer[ 64 ];
-    xMQTTTaskParameter *pxParameters;
-    pxParameters = ( xMQTTTaskParameter * ) pvParameters;
-
-    float           temperatureC;
-    float           temperatureF;
-
-    /*
-     *  Create/Open the I2C bus that talks to the TMP sensor
-     */
-    I2C_Params      i2cParams;
-    I2C_Params_init(&i2cParams);
-    i2cParams.bitRate = I2C_400kHz;
-
-    if ( xI2C == NULL )
-      xI2C = I2C_open( Board_I2C_TMP,  // Defined in Board.h
-                       &i2cParams );
-    vTaskDelay( pdMS_TO_TICKS( 7 ) ); // ensure configuration mode completes, 7ms, super magic number
-
-    if ( xI2C == NULL ) {
-      configPRINTF(("CRITICAL: Could not open I2C bus. Reset the board.\r\n"));
-      while (1);
-    }
-
-
-    txBuf[0] = TEMPERATURE_TASK_TMP_REGISTER;
-
-    i2cTxn.slaveAddress = TEMPERATURE_TASK_SENSOR_ADDRESS;
-    i2cTxn.writeBuf     = txBuf;
-    i2cTxn.writeCount   = 1;
-    i2cTxn.readBuf      = rxBuf;
-    i2cTxn.readCount    = 2;
-
-    while (1) {
-        vTaskDelay( pdMS_TO_TICKS( TEMPERATURE_TASK_READ_DELAY_MS ) );
-        if ( xMQTTHandle == NULL ) continue;
-
-        if ( xSemaphoreTake( xSemaphore, 10 ) == pdTRUE )
-        {
+	Here, we configure a delay to roughly define the interval at which to do the temperature reading, which is *at least* every three seconds.
+	
+	```c
+	    while (1) {
+	        vTaskDelay( pdMS_TO_TICKS( TEMPERATURE_TASK_READ_DELAY_MS ) );
+	```
+	Sometimes, you may be initializing the MQTT handle in another task that may have not had the chance to initialize the handle yet. In this case, we go back to top and to the vTaskDelay again.
+	
+	```c
+	        if ( xMQTTHandle == NULL ) continue;
+	```
+	```c	
             /* Do not hold the semaphore for longer than needed. */
             if ( I2C_transfer(xI2C, &i2cTxn) ) {
                 temperatureC = (rxBuf[0] << 6) | (rxBuf[1] >> 2);
             }
-            xSemaphoreGive( xSemaphore );
-        }
-
-        temperatureC *= 0.03125; // FIXME: Should be reading reference voltage off sensor
-        temperatureF = ( ( temperatureC * 9 ) / 5 ) + 32;
-
-        configPRINTF(("Celsius: %f, Fahrenheit: %f\r\n", temperatureC, temperatureF));
-
-        snprintf(cDataBuffer, sizeof( cDataBuffer), "{\"temperature\":%f, \"d\":\"%s\"}", temperatureF, thing_mac_address);
-
-        MQTTAgentPublishParams_t pxPublishParams;
-        pxPublishParams.pucTopic = ( uint8_t * ) pxParameters->topic;
-        pxPublishParams.usTopicLength = ( uint16_t )  strlen(( const char * )pxParameters->topic);
-        pxPublishParams.pvData = cDataBuffer;
-        pxPublishParams.ulDataLength = ( uint32_t )  strlen(( const char * )cDataBuffer);
-        pxPublishParams.xQoS =  eMQTTQoS1;
-
-        if ( MQTT_AGENT_Publish(xMQTTHandle, &( pxPublishParams ),
-                democonfigMQTT_TIMEOUT) == eMQTTSuccess )
-        {
-            configPRINTF(("Outbound sent successfully.\r\n"));
-        }
-        else
-        {
-            configPRINTF(("Outbound NOT sent successfully.\r\n"));
-        }
-
-    }
-}
+	
+	        temperatureC *= 0.03125; // FIXME: Should be reading reference voltage off sensor
+	        temperatureF = ( ( temperatureC * 9 ) / 5 ) + 32;
+	
+	        configPRINTF(("Celsius: %f, Fahrenheit: %f\r\n", temperatureC, temperatureF));
+	
+	        snprintf(cDataBuffer, sizeof( cDataBuffer), "{\"temperature\":%f, \"d\":\"%s\"}", temperatureF, thing_mac_address);
+	
+	        MQTTAgentPublishParams_t pxPublishParams;
+	        pxPublishParams.pucTopic = ( uint8_t * ) pxParameters->topic;
+	        pxPublishParams.usTopicLength = ( uint16_t )  strlen(( const char * )pxParameters->topic);
+	        pxPublishParams.pvData = cDataBuffer;
+	        pxPublishParams.ulDataLength = ( uint32_t )  strlen(( const char * )cDataBuffer);
+	        pxPublishParams.xQoS =  eMQTTQoS1;
+	
+	        if ( MQTT_AGENT_Publish(xMQTTHandle, &( pxPublishParams ),
+	                democonfigMQTT_TIMEOUT) == eMQTTSuccess )
+	        {
+	            configPRINTF(("Outbound sent successfully.\r\n"));
+	        }
+	        else
+	        {
+	            configPRINTF(("Outbound NOT sent successfully.\r\n"));
+	        }
+	
+	    }
+	}
    ```
 4. Add the globals and the function declaration.  You can put the following declaration beneath the ```thing_mac_address``` declaration.
 
