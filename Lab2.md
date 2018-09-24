@@ -12,10 +12,19 @@ In this section, open the Amazon FreeRTOS Sample Project that serves as the base
 2. Import the project.
    1. Open the import dialog by clicking **File > Import...**.
    2. Expand **Code Composer Studio**, select **CCS Projects**, and click **Next**.
+   
+         <img src="images/Lab2/ccs_project_import_action_selection.png" alt="drawing" style="width:600px;"/>
+
    3. For 	**Select search-directory**, choose **Browse...**
    4. Locate the directory ```LAB_REPOPATH```, and then navigate to ```LAB_REPOPATH/demos/ti/cc3220_launchpad/ccs```.  Click Open.
    5. Ensure that **aws_demos** is checked in the **Discovered projects**.
+   
+
+      <img src="images/Lab2/ccs_project_import_dialog_copy_project_checked.png" alt="drawing" style="width:600px;"/>
    6. Ensure that the **Copy projects into workspace** checkbox is NOT checked.
+   
+      <img src="images/Lab2/ccs_project_import_dialog.png" alt="drawing" style="width:600px;"/>
+      
    7. Click **Finish**.
 2. Change to the latest compiler version available.
    1. From the newly imported project, Right-click the folder on the root of the project, and click Properties.
@@ -137,15 +146,27 @@ On your workstation, open Explorer (Windows) or Finder (Mac OSX) and navigate to
 2. Reset the board.
 3. Click the debug link.
 4. If you get a dialog box to upgrade the XDS-110 Firmware, click Update.  After updating, unplug the board, then plug in the board, and then click debug again.
+
+   <img src="images/Lab2/firmware_update_message.png" alt="drawing" style="width:600px;"/>
 5. When the debug process starts, your debugging session will start and an automatic breakpoint will be added for the ```main()``` function.
 6. Before continuing, login to the AWS Console, and then navigate to the AWS IoT Core console.
 7. On the left-hand side, click the **Test** menu item.
 8. For the subscription topic, enter ```#```
 9. Click the ```Subscribe to topic``` button.
-10. Open a Terminal window from CCS8.  First, we need to add the view.  Navigate to Window > Show View > 
-10. Switch to CCS8.  Click the Resume button **TODO ADD IMAGE FOR BUTTON**
-11. The demo should now be running.  When completed, the output to the CCS8 terminal will be similar to the following **TODO ADD IMAGE**
+10. Open a Terminal window from CCS8.  First, we need to add the view.  Navigate to ```Window > Show View > Other...```
+11. In the filter box, enter Term, ensure Terminal is selected, and click Open.
+12. Click on the monitor icon.
 
+	<img src="images/Lab2/terminal_menu_bar.png" alt="drawing" style="width:600px;"/>
+13. Ensure that Serial is selected and the baud is 115200.
+ 
+	<img src="images/Lab2/terminal_serial_connection_dialog.png" alt="drawing" style="width:600px;"/>
+10. Switch to CCS8.  Click the Resume button in the CCS8 menu bar. **TODO ADD IMAGE FOR BUTTON**
+
+11. The demo should now be running.  When completed, the output to the CCS8 terminal will be similar to the following.
+
+    <img src="images/Lab2/full_demo_completed.png" alt="drawing" style="width:600px;"/>
+    
 In the following sections, we will modify the sample program to do something a bit more interesting with it.
 
 ### Modifying the Client ID
