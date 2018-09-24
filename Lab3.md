@@ -134,19 +134,32 @@ In the last lab, we enabled pin configurations to use the GPIO LEDs.  Since we a
 	```c
 	        if ( xMQTTHandle == NULL ) continue;
 	```
+	
+	Here is the real work relating to the host communicating with the sensor.  The ```I2C_transfer``` call abstracts a lot of complicated handling in terms of sending and receiving, and managing the contents of the buffers.  When the transaction succeeds, we perform some bitfield manipulation to get the float value.
+	
 	```c	
             /* Do not hold the semaphore for longer than needed. */
             if ( I2C_transfer(xI2C, &i2cTxn) ) {
                 temperatureC = (rxBuf[0] << 6) | (rxBuf[1] >> 2);
             }
-	
+   ```
+   Every sensor requires some kind of environmental calibration.  Here, we are a bit sloppy amd use a common "fudging" factor.
+   
+   ```c	
 	        temperatureC *= 0.03125; // FIXME: Should be reading reference voltage off sensor
 	        temperatureF = ( ( temperatureC * 9 ) / 5 ) + 32;
 	
 	        configPRINTF(("Celsius: %f, Fahrenheit: %f\r\n", temperatureC, temperatureF));
-	
+   ```
+   
+   Now that we have the data, we can send it to the cloud.  We want to send the data in JSON format.  Also, we want the message to contain our Device ID so when the data gets logged somewhere, it can keep a record of where it came from.  As you can see, we are using the familiar ```thing_mac_address``` again.
+   
+   ```c	
 	        snprintf(cDataBuffer, sizeof( cDataBuffer), "{\"temperature\":%f, \"d\":\"%s\"}", temperatureF, thing_mac_address);
+	```
+	Next, we simply organize the parameters to publish using the already initialized MQTT Agent.
 	
+	```c
 	        MQTTAgentPublishParams_t pxPublishParams;
 	        pxPublishParams.pucTopic = ( uint8_t * ) pxParameters->topic;
 	        pxPublishParams.usTopicLength = ( uint16_t )  strlen(( const char * )pxParameters->topic);
