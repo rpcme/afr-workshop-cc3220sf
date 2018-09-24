@@ -312,3 +312,64 @@ What would happen if we, for example, changed the ```xSemaphoreTake``` in the BM
 ### Experiencing the Cloud Integration
 
 In this section, you will send an alert to your mobile phone when your board's reported state exceeds the desired state.
+
+In this section, you will be receiving messages from the AWS IoT Core message broker by a rule in AWS IoT Core Rules Engine, and routing those messages to Amazon SNS to eventually send an alert.
+
+#### Setting up mobile notifications
+
+Amazon SNS enables a fast, easy, and cost-effective way of sending SNS messages to mobile devices.  In this section, you will configure SNS to send messages to your phone.
+
+1. Login to the AWS Console.
+2. Click ```Services``` > ```Simple Notification Service```. Use the filter or look under Application Integration to find it.
+
+
+First, we need to create a Topic to use to proxy the message.  The SMS part of a service acts as an application subscriber.
+
+1. On the left hand side, click **Topics**.
+2. In the content panel, click **Create new topic**.
+3. For the **Topic name**, enter **angleEmitter**.
+4. For the **Display name**, enter **AngleAlert**
+5. Click the **Create topic** button.
+6. After creation, the Topic will be listed in the content panel.  Copy the ARN to the clipboard (Windows, CTRL-C; Mac, Command-C)
+ 
+3. On the left hand side, click Subscriptions.
+4. In the content panel, click the **Create subscription** button.
+5. In Topic ARN, paste the ARN you copied in the previous subsection (Windows, CTRL-V; Mac, Command-V)
+6. For **Protocol**, select SMS from the drop-down.
+7. For **Endpoint**, enter your phone number.
+8. Click **Create subscription**.
+
+#### Setting up the rule
+
+Now we will setup the rule where if the reported angle exceeds the desired angle, then the message will be sent to SNS, and then SNS will send you a message.
+
+1. In the AWS Console, click Services > IoT Core.
+2. On the left hand side, click **Act**.
+3. On the right hand side, locate and click the **Create** button.
+4. For the **Name** of **Create a rule**, enter **AngleEmitter**
+5. Scroll down to **Rule query statement**.  Copy and paste the following statement.
+
+   ```sql
+   select current.state.reported as reported from "$aws/things/+/shadow/update/documents" 
+   where abs(current.state.reported.x) > abs(current.state.desired.x) or
+   abs(current.state.reported.y) > abs(current.state.desired.y)
+   ```
+6. Scroll down, and click **Add action**.
+7. Scroll down, and select the radio button for **Send a message as an SNS push notification**.
+8. Scroll down, and click **Configure action**.
+9. In **Configure action**, for SNS Target, click **No topic selected**, and click the **Select** link on the same line as **angleEmitter**.
+10. For **Message format**, select **RAW**.
+11. For IAM Role name, click **Create a new role**.
+12. Enter name aws-iot-sns-role.
+13. Click the button **Create a new role**.
+14. From the drop down, select the role name.
+15. Click the **Add action** button.
+16. **IMPORTANT** On the lower-right hand side, click **Create rule**.
+
+### Outcomes
+
+In this lab, you learned a lot about handling multiple tasks on a bus where only one communication can happen at a time - and send messages to Amazon Simple Notification Service based on Device Shadow state information.
+
+Time to go to the next lab!
+
+[Next Lab](./Lab5.md)
