@@ -295,13 +295,13 @@ Out of the box, the LEDs are disabled because they are shared on the same bus as
 
 1. In CCS8, open ```application_code``` > ```ti_code``` > ```CC3220SF_LAUNCHXL.c```.
 2. Scroll to line 225, for pin configuration ```GPIO_PinConfig gpioPinConfigs[]```.
-3. The changes are done to the last four elements in the array, so the array will look like the following.  Note the commas aded to the unremarked lines.
+3. The changes are done to the last four elements in the array, so the array will look like the following.  Note the commas added to the unremarked lines.
 
    ```c
     CC3220SF_LAUNCHXL_GPIO_LED_D6,
-    /*GPIOCC32XX_GPIO_10 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_HIGH | GPIO_CFG_OUT_LOW,*/
+    GPIOCC32XX_GPIO_10 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_HIGH | GPIO_CFG_OUT_LOW,
     CC3220SF_LAUNCHXL_GPIO_LED_D5,
-    /* GPIOCC32XX_GPIO_11 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_HIGH | GPIO_CFG_OUT_LOW,*/
+    GPIOCC32XX_GPIO_11 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_HIGH | GPIO_CFG_OUT_LOW,
    ```
    
 4. In CCS8, open ```application_code``` > ```main.c```.  Scroll to line 126.  Note the API call ```GPIO_Init()```.  This API call is not part of Amazon FreeRTOS; rather, it is part of the TI SDK.  Since it is already being initialized by the scheduler startup hook, we do not need to add it again.
