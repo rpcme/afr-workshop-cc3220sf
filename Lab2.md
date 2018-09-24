@@ -271,19 +271,20 @@ In the Wi-Fi abstraction layer in Amazon FreeRTOS, there is an API to retrieve t
    ```
 7. Build and debug-run the application to ensure everything is working with your new unique Client ID.  How do we know that we are using the ID?  We can add logging instrumentation to help us know that.  Before the structure definition, add this line:
 
-   ```c
+```c
    configPRINTF( ( "My Client ID is [%s]\r\n", thing_mac_address ) );
-   ```
+```
 
-   in the Terminal logging window, you will see the following:
+In the Terminal logging window, you will see the following:
    
-   ```
+```c
    8 1670 [Tmr Svc] Wi-Fi connected to AP Gwypo_2.4GHz_1878.
-9 1670 [Tmr Svc] IP Address acquired 192.168.29.199
-10 1671 [Tmr Svc] Creating MQTT Echo Task...
-11 1672 [MQTTEcho] My Client ID is [9884e3f60411]
-12 1672 [MQTTEcho] MQTT echo attempting to connect to audqth7zumq6e.iot.us-east-1.amazonaws.com.
-   ```
+   9 1670 [Tmr Svc] IP Address acquired 192.168.29.199
+   10 1671 [Tmr Svc] Creating MQTT Echo Task...
+   11 1672 [MQTTEcho] My Client ID is [9884e3f60411]
+   12 1672 [MQTTEcho] MQTT echo attempting to connect to audqth7zumq6e.iot.us-east-1.amazonaws.com.
+```
+   
 Next, we will learn how to integrate this demo with some of the on-board components.
 
 ### Making Local Actuation Happen
@@ -302,6 +303,7 @@ Out of the box, the LEDs are disabled because they are shared on the same bus as
     CC3220SF_LAUNCHXL_GPIO_LED_D5,
     /* GPIOCC32XX_GPIO_11 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_HIGH | GPIO_CFG_OUT_LOW,*/
    ```
+   
 4. In CCS8, open ```application_code``` > ```main.c```.  Scroll to line 126.  Note the API call ```GPIO_Init()```.  This API call is not part of Amazon FreeRTOS; rather, it is part of the TI SDK.  Since it is already being initialized by the scheduler startup hook, we do not need to add it again.
 
 Next, we will add GPIO code to perform a tick-tock action between the two GPIOs.
