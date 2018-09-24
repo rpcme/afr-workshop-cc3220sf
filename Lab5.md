@@ -319,6 +319,7 @@ To create an OTA user policy
 6.         Choose the *Create policy* button. 
 7.         On the *JSON* tab, copy and paste the following policy document into the policy editor. Replace <example-bucket> with the name of the Amazon S3 bucket where you store your OTA update firmware image. Replace <your-account-id> with your AWS account ID. You can find your AWS account ID in the upper-right corner of the console. When you enter your account ID, remove any dashes (-). Replace <role-name> with the name of the IAM service role you just created. 
 
+```json
 {
       "Version":"2012-10-17",
       "Statement":[
@@ -364,6 +365,7 @@ To create an OTA user policy
       }
       ]
 }
+```
 
 8.         Choose the *Review policy* button. 
 9.         Type a name for your new OTA user policy, and then choose the *Create policy* button. 
@@ -457,7 +459,7 @@ At the AWS side, you have uploaded the new firmware image onto the S3 bucket. In
 9.*    *Under Pathname of code signing certificate on device, type tisigner.crt.der. 
 10.  Make sure *Pathname of firmware image on device* is set to /sys/mcuflashimg.bin
 11.  Under Select your firmware image in S3, choose *Select*, and then choose the aws_demos.bin image that contains your updated image.
-12.  Under Code signing certificate, choose *Select*, and then choose your code-signing certificate. Code-signing certificates are listed by ARN. The ARN for your certificate was displayed when you registered it with ACM in Module 2 Step 4 (https://quip-amazon.com/lyqjAdVE6nnd#QKR9CAyPkpN).
+12.  Under Code signing certificate, choose *Select*, and then choose your code-signing certificate. Code-signing certificates are listed by ARN. The ARN for your certificate was displayed when you registered it with ACM.
 13.  Under Job type, choose *Your job will complete after deploying to the selected devices/groups (snapshot)*.
 14.  Under IAM role for OTA update job, choose your OTA service role. 
 15.  In the ID box, type an alphanumeric ID for your job.
@@ -555,23 +557,6 @@ After the device downloads the updated firmware, it restarts and then installs t
       ...
 
 
-### Review and Clean up
-
-Activity Review and Use Case Alignment
-
-Let us now review what we have experienced through the exercises completed in this tutorial aligned to the applicable use cases.
-
-*Module 1 - Preparing the Development Environment*
-In module 1 we performed the necessary activities to setup and configure a developer workstation with the tools necessary for the subsequent module activities. While this module is not generally aligned with a operational use case, the activities are important to consider when planning requirements for developers and other support staff who will be working on software and other solution development activities.
-
-*Module 2 - Configuring a device into AWS IoT*
-In module 2, we covered a general set of activities that are involved in configuring an AWS IoT identity and policy for the IoT device. This type of activity is typically performed prior to manufacturing or at a time during deployment but prior to operational use.
-
-*Module 3 - Initializing a device at factory*
-In module 3, we performed a configuration, build and initial deployment of the software binary onto the device. This type of activity would normally be performed as a step in the manufacturing of the device. There are opportunities to improve the automation of these steps in a production scenario. They are demonstrated manually in this module for the learning benefit of the reader.
-
-*Module 4 - Setup and run OTA update*
-In module 4, we configured and deployed a new software update to our device. This module is where all the prior activities come together to demonstrate the operational aspects of the AWS IoT OTA features. AWS FreeRTOS includes an added benefit of a device-side OTA task to manage the receipt, validation and application of the software update. On some devices using other operating systems, these functions may require custom development. As with the prior modules, there are opportunities for automation with regard to these activities for building and deploying software updates to IoT devices.
 
 **WARNING**: Cleaning Up
 
