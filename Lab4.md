@@ -201,6 +201,12 @@ The read-report process will run within an endless while loop.
         vTaskDelay( pdMS_TO_TICKS( TEMPERATURE_TASK_READ_DELAY_MS ) );
    ```
 
+5. Finally, add the header file to add Semaphore related APIs.  You can add this underneath ```#include "message_buffer.h"```.
+
+   ```c
+   #include "semphr.h"
+   ```
+
 #### Adding xCreateTask for the Accelerometer
 
 Before doing this, you might have asked yourself: don't we need to initialize I2C like we did in the previous lab?  The answer is No.  However, we need to "pull up" the initialization so it's done only once for both Tasks.  We will pull up that code first, and then implement the xCreateTask call.
@@ -225,6 +231,8 @@ Before doing this, you might have asked yourself: don't we need to initialize I2
       while (1);
     }
    ```
+
+
 2. Next, add the declaration of the properties structure we will use to compose in the topic name for the accelerometer.  You can put this directly under the declaration for the properties we did in the previous lab.
 
    ```c
