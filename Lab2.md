@@ -271,21 +271,21 @@ In the Wi-Fi abstraction layer in Amazon FreeRTOS, there is an API to retrieve t
    ```
 7. Build and debug-run the application to ensure everything is working with your new unique Client ID.  How do we know that we are using the ID?  We can add logging instrumentation to help us know that.  Before the structure definition, add this line:
 
-```c
-   configPRINTF( ( "My Client ID is [%s]\r\n", thing_mac_address ) );
-```
+   ```c
+      configPRINTF( ( "My Client ID is [%s]\r\n", thing_mac_address ) );
+   ```
 
-In the Terminal logging window, you will see the following:
+   In the Terminal logging window, you will see the following:
    
-```c
+   ```c
    8 1670 [Tmr Svc] Wi-Fi connected to AP Gwypo_2.4GHz_1878.
    9 1670 [Tmr Svc] IP Address acquired 192.168.29.199
    10 1671 [Tmr Svc] Creating MQTT Echo Task...
    11 1672 [MQTTEcho] My Client ID is [9884e3f60411]
    12 1672 [MQTTEcho] MQTT echo attempting to connect to audqth7zumq6e.iot.us-east-1.amazonaws.com.
-```
+   ```
    
-Next, we will learn how to integrate this demo with some of the on-board components.
+   Next, we will learn how to integrate this demo with some of the on-board components.
 
 ### Making Local Actuation Happen
 
