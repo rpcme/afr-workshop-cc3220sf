@@ -191,7 +191,7 @@ In the last lab, we enabled pin configurations to use the GPIO LEDs.  Since we a
    ```c
    static void prvTempSensorReaderTask( void * pvParameters );
    ```
-5. Add the structure definitions.  There are two structures that need to be defined. One is for the Task parameter and the other is for managing sensor data.  This can be placed under the ```xSemaphore``` declaration.
+5. Add the structure definitions.  There are two structures that need to be defined. One is for the Task parameter and the other is for managing sensor data.  This can be placed under the ```xI2C``` declaration.
 
    ```c
    
