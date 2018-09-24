@@ -364,6 +364,36 @@ Now we will setup the rule where if the reported angle exceeds the desired angle
 15. Click the **Add action** button.
 16. **IMPORTANT** On the lower-right hand side, click **Create rule**.
 
+### Testing the Rule
+
+In order to test the functionality, you need to change the desired state within the Device Shadow. 
+
+1. Login to the AWS Console.
+2. Navigate to Services > IoT Core.
+3. On the left hand side, click Manage, and then click Things.
+4. On the right-hand side, click your Thing.
+5. On the left-hand side, click Shadow.
+6. For the **Shadow Document**, click **Edit**.
+7. Edit the document to show the following:
+
+   ```json
+   {
+     "desired": {
+        "x": 45,
+        "y": 45,
+        "z": 65
+     },
+     "reported": {
+      "x": 0,
+      "y": 1,
+      "z": 0
+     }
+   }
+   ``` 
+8. Click **Save**.
+
+At this point, when you run **Debug** on your device, and then move the device on the X or Y axis past 45 degrees, you will receive an alert on your phone.
+
 ### Outcomes
 
 In this lab, you learned a lot about handling multiple tasks on a bus where only one communication can happen at a time - and send messages to Amazon Simple Notification Service based on Device Shadow state information.
