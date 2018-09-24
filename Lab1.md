@@ -256,14 +256,14 @@ In the previous section, you acquired the MAC Address of the device.  The Thing 
 
 In this step, you will create the certificates to authenticate your Thing with AWS IoT.  Although you can perform these steps using the AWS Console, customers will typically use the AWS CLI or API.
 
-You will need to retrieve the [[https://www.symantec.com/content/en/us/enterprise/verisign/roots/VeriSign-Class%203-Public-Primary-Certification-Authority-G5.pem][Root CA Certificate]] from Symantec.
+You will need to retrieve the [Root CA Certificate](https://www.symantec.com/content/en/us/enterprise/verisign/roots/VeriSign-Class%203-Public-Primary-Certification-Authority-G5.pem) from Symantec.
 
 *WARNING*: When creating a new certificate with AWS IoT, the generated Public and Private keys can only be retrieved directly after creation.
 
 When you authenticate with AWS IoT, the service receives the certificate and verifies that the certificate was signed with the private key to determine that the certificate is not falsified.
 
 | File        | Purpose                                                            |
-|-------------+--------------------------------------------------------------------|
+|-------------|--------------------------------------------------------------------|
 | Private key | Used for signing the Certificate, represents your device identity. |
 | Certificate | Authentication with AWS IoT (the Policy authorizes you)            |
 | Public key  | Unused                                                             |
@@ -273,19 +273,12 @@ When you authenticate with AWS IoT, the service receives the certificate and ver
 
 Using the Terminal Window, change directory to the certificate and key working directory.
 
-> **Mac OSX**
-> > ```bash
-> > cd ${LAB_REPOPATH}
-> > mkdir credentials
-> > cd credentials
-> > ```
->
-> **Windows**
-> > ```shell
-> > cd %LAB_REPOPATH%
-> > mkdir credentials
-> > cd credentials
-> > ```
+
+```bash
+cd ${LAB_REPOPATH}
+mkdir credentials
+cd credentials
+```
 
 Generate the client certificate and key.  This command is cross-platform.  The command will generate a lot of output.  There is one key output we require for future operation: the ```certificateArn``` property.  We can narrow the output using the ```--query``` flag.
 
