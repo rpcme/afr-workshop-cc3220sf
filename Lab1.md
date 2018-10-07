@@ -153,7 +153,7 @@ From your Home directory, check out the sources.
 ```
 git clone --recursive https://github.com/rpcme/afr-workshop-cc3220sf
 ```
-3. In your HOME directory, you should now have two directories: ```aws-iot``` and ```afr-workshop-cc3220sf```.
+3. In your HOME directory, you should now have directory ```afr-workshop-cc3220sf```.
 
 From this point onward, and throughout the remaining labs, the repository checkout directory is referred to as ```LAB_REPOPATH```.
 
