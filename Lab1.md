@@ -196,6 +196,10 @@ Another challenge is how to retrieve the MAC address when it's printed neither o
 
    <img src="images/Lab1/uniflash_after_cable_connect.png" alt="drawing" style="width:600px;"/>
 
+   If the connected device does not automatically appear here, then click on the 'Start Now' button.
+   
+   <img src="images/Lab1/uniflash_start_now.png" alt="drawing" style="width:600px;"/>
+
 5. Click New Project.
 
    <img src="images/Lab1/uniflash_choose_project.png" alt="drawing" style="width:600px;"/>
