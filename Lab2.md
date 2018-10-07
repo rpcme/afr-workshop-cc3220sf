@@ -143,8 +143,17 @@ On your workstation, open Explorer (Windows) or Finder (Mac OSX) and navigate to
 ### Testing the connection
 
 1. Change the SOP jumper to SOP Position 0 (JTAG).
+
+   <img src="images/Lab1/full_board_SOP.png" alt="drawing" style="width:600px;"/>
+   
 2. Reset the board.
-3. Click the debug link.
+
+    <img src="images/Lab2/cc3220sf_reset.png" alt="drawing" style="width:600px;"/>
+    
+3. In Code Composer Studio, click the Debug button.
+
+    <img src="images/Lab2/ccs_menubar_debug.png" alt="drawing" style="width:600px;"/>
+
 4. If you get a dialog box to upgrade the XDS-110 Firmware, click Update.  After updating, unplug the board, then plug in the board, and then click debug again.
 
    <img src="images/Lab2/firmware_update_message.png" alt="drawing" style="width:600px;"/>
@@ -161,7 +170,9 @@ On your workstation, open Explorer (Windows) or Finder (Mac OSX) and navigate to
 13. Ensure that Serial is selected and the baud is 115200.
  
 	<img src="images/Lab2/terminal_serial_connection_dialog.png" alt="drawing" style="width:600px;"/>
-10. Switch to CCS8.  Click the Resume button in the CCS8 menu bar. **TODO ADD IMAGE FOR BUTTON**
+10. Switch to Code Composer Studio.  Click the Resume button in the Code Composer Studio menu bar.
+
+    <img src="images/Lab2/ccs_menubar_continue.png" alt="drawing" style="width:300px;"/>
 
 11. The demo should now be running.  When completed, the output to the CCS8 terminal will be similar to the following.
 
