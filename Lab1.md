@@ -318,13 +318,14 @@ CERTIFICATE_ARN=arn:aws:iot:us-east-1:012345678910:cert/8530c605d209a17917da34e5
 
 In this step, you will setup a policy to grant appropriate permissions for your Thing when authenticating with the Certificate.
 
-Create the policy file on the device.
+Create the policy file on the device.  To keep the files organized, create this file in the ```credentials``` directory.
 
 ```shell
+cd 
 vi ${THING_NAME}_policy.json
 ```
 
-Enter the following AWS IoT policy.  This policy allows the authenticated Thing to perform any action on any MQTT topic.
+Enter the following AWS IoT policy.  This policy allows the authenticated Thing to perform any action on any MQTT topic.  It is convenient for development, but not appropriate for when your devices go into production.
 
 ```json
 {
