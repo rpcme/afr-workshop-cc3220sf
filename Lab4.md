@@ -199,6 +199,7 @@ The read-report process will run within an endless while loop.
         }
 
         vTaskDelay( pdMS_TO_TICKS( TEMPERATURE_TASK_READ_DELAY_MS ) );
+    }
    ```
 
 5. Finally, add the header file to add Semaphore related APIs.  You can add this underneath ```#include "message_buffer.h"```.
