@@ -47,7 +47,7 @@ The accelerometer task uses some helper libraries that are delivered as part of 
    3. Enter the following value:
 
       ```c
-      ${workspace_loc:/${ProjName}/extern}
+      ${workspace_loc:/${ProjName}/extern/include}
       ```
       And click OK.
    4. Click Apply and Close.
