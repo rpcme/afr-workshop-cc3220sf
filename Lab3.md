@@ -391,13 +391,13 @@ The data set defines a SQL query for accessing the data in the data store.
 7. For **Author SQL Query**, enter the following query. It creates a dataset for a specific sensor.
 
    ```sql
-   SELECT temperature, timestamp FROM mytemperaturestore WHERE d = '[YOUR_MAC_ADDRESS]'
+   SELECT temperature, timestamp FROM mytemperaturedatastore WHERE d = '[YOUR_MAC_ADDRESS]'
    ```
    
    Replace [YOUR_MAC_ADDRESS] with the MAC address on your board.  For example:
    
    ```sql
-   SELECT temperature, timestamp FROM mytemperaturestore WHERE d = '9884e3f60411'
+   SELECT temperature, timestamp FROM mytemperaturedatastore WHERE d = '9884e3f60411'
    ```
    
    Click Next.
