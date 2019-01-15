@@ -189,10 +189,15 @@ Another challenge is how to retrieve the MAC address when it's printed neither o
 
    <img src="images/Lab1/full_board_SOP.png" alt="drawing" style="width:600px;"/>
 
-3. Attach the CC3220SF board to your computer.
+3. Plug the USB cable into the CC3220SF Launchpad device.
 
-   ![Cable]((images/Lab1/
-4. Click the Start button.
+   <img src="images/Lab1/plug_board.jpg" alt="drawing" style="width:600px;"/>
+
+4. Attach the CC3220SF board to your computer.
+
+   <img src="images/Lab1/plug_computer.jpg" alt="drawing" style="width:600px;"/>
+ 
+5. Click the Start button.
 
    <img src="images/Lab1/uniflash_after_cable_connect.png" alt="drawing" style="width:600px;"/>
 
@@ -200,11 +205,11 @@ Another challenge is how to retrieve the MAC address when it's printed neither o
    
    <img src="images/Lab1/uniflash_start_now.png" alt="drawing" style="width:600px;"/>
 
-5. Click New Project.
+6. Click New Project.
 
    <img src="images/Lab1/uniflash_choose_project.png" alt="drawing" style="width:600px;"/>
 
-6. Enter information as shown.  Explanation for each input item is listed below the image. 
+7. Enter information as shown.  Explanation for each input item is listed below the image. 
 
    ![New](images/Lab1/uniflash_project_detail.png)
    1. Enter the Project Name IotDayWorkshop.
@@ -212,13 +217,13 @@ Another challenge is how to retrieve the MAC address when it's printed neither o
    3. Select Development Mode
    4. Click Create Project.
 
-7. Click the Connect button.
+8. Click the Connect button.
    
    ![Start](images/Lab1/uniflash_uart_preconnect.png)
-8. After connecting, you will be able to view device information.  Write down the MAC address for use in the next section.
+9. After connecting, you will be able to view device information.  Write down the MAC address for use in the next section.
 
    ![Start](images/Lab1/uniflash_uart_postconnect.png)
-9. If you see the following dialog box, ensure the SOP jumper is in the correct position (position 2).
+10. If you see the following dialog box, ensure the SOP jumper is in the correct position (position 2).
 
    ![Start](images/Lab1/uniflash_wrong_sop.png)
 
