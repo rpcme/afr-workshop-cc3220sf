@@ -2,7 +2,7 @@
 ## Lab 3: Using AWS IoT Core
 
 
-In this lab, you will learn how to organize code into a new Amazon FreeRTOS Task, use the TMP006 sensor, ingest basic telemetry data, and then do something interesting with the data in the AWS Cloud. 
+In this lab, you will learn how to organize code into a new Amazonq FreeRTOS Task, use the TMP006 sensor, ingest basic telemetry data, and then do something interesting with the data in the AWS Cloud. 
 
 ### Premise
 
@@ -191,7 +191,7 @@ In the last lab, we enabled pin configurations to use the GPIO LEDs.  Since we a
    ```c
    static void prvTempSensorReaderTask( void * pvParameters );
    ```
-5. Add the structure definitions.  There are two structures that need to be defined. One is for the Task parameter and the other is for managing sensor data.  This can be placed under the ```xI2C``` declaration.
+5. Add the structure definitions.  There are two structures that need to be defined. One is for the Task parameter and the other is for managing sensor data.  This can be placed under the ```xI2Cx``` declaration.
 
    ```c
    
