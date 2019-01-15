@@ -179,7 +179,7 @@ From time to time visual confirmation may be an effective way to correlate CLI f
 
 There are a few ways of identifying a unique ID on a microcontroller based on what the MCU or relating peripherals are part of the device.  Some may choose using the MCU serial number, which is a number assigned to the microcontroller by the manufacturer.  In our case, we will use an identifier used with networked devices: the MAC address.
 
-The MAC address composition that may be familiar to you has the format XX:XX:XX:XX:XX:XX.  However, we cannot use that format when creating AWS IoT things since the colon is not a supported character.
+The MAC address composition that may be familiar to you has the format XX:XX:XX:XX:XX:XX.  However, we cannot use that format when creating AWS IoT Core things since the colon is not a supported character.
 
 Another challenge is how to retrieve the MAC address when it's printed neither on the MCU nor the development board.  In this case, we can use Texas Instruments Uniflash.
 
@@ -263,20 +263,20 @@ In the previous section, you acquired the MAC Address of the device.  The Thing 
 
 #### Create the Device Certificate
 
-In this step, you will create the certificates to authenticate your Thing with AWS IoT.  Although you can perform these steps using the AWS Console, customers will typically use the AWS CLI or API.
+In this step, you will create the certificates to authenticate your Thing to AWS IoT Core.  Although you can perform these steps using the AWS Console, customers will typically use the AWS CLI or API.
 
 You will need to retrieve the [Root CA Certificate](https://www.symantec.com/content/en/us/enterprise/verisign/roots/VeriSign-Class%203-Public-Primary-Certification-Authority-G5.pem) from Symantec.
 
-*WARNING*: When creating a new certificate with AWS IoT, the generated Public and Private keys can only be retrieved directly after creation.
+*WARNING*: When creating a new certificate for AWS IoT Core, the generated Public and Private keys can only be retrieved directly after creation.
 
-When you authenticate with AWS IoT, the service receives the certificate and verifies that the certificate was signed with the private key to determine that the certificate is not falsified.
+When you authenticate to AWS IoT Core, the service receives the certificate and verifies that the certificate was signed with the private key to determine that the certificate is not falsified.
 
 | File        | Purpose                                                            |
 |-------------|--------------------------------------------------------------------|
 | Private key | Used for signing the Certificate, represents your device identity. |
-| Certificate | Authentication with AWS IoT (the Policy authorizes you)            |
+| Certificate | Authentication to AWS IoT Core (the Policy authorizes you)         |
 | Public key  | Unused                                                             |
-| Root CA     | AWS IoT endpoint verification                                      |
+| Root CA     | AWS IoT Core endpoint verification                                 |
 
    
 
@@ -330,7 +330,7 @@ cd
 vi ${THING_NAME}_policy.json
 ```
 
-Enter the following AWS IoT policy.  This policy allows the authenticated Thing to perform any action on any MQTT topic.  It is convenient for development, but not appropriate for when your devices go into production.
+Enter the following AWS IoT Core policy.  This policy allows the authenticated Thing to perform any action on any MQTT topic.  It is convenient for development, but not appropriate for when your devices go into production.
 
 ```json
 {
@@ -349,7 +349,7 @@ Set the Policy name.
 POLICY_NAME=${THING_NAME}_Policy
 ```
 
-Create the AWS IoT policy.
+Create the AWS IoT Core policy.
 
 ```bash
 aws iot create-policy                     \
@@ -381,7 +381,7 @@ aws iot attach-principal-policy            \
 
 
 
-At this point, when the client code makes a connection using the Client certificate, theit will be able to perform all AWS IoT actions.
+At this point, when the client code makes a connection using the Client certificate, it will be able to perform all AWS IoT Core actions.
 
 ### Outcomes
 
