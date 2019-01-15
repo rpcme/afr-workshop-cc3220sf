@@ -25,20 +25,20 @@ In this project, you'll learn how to deploy an over-the-air (OTA) update to a mi
   > Windows
   > > The location of the certificates are in 
   > > ```SIMPLELINK_SDK_BASE\tools\cc32xx_tools\certificate-playground```
+  > > Where ```SIMPLELINK_SDK_BASE``` is usually ```C:\ti\simplelink_cc13x2_sdk_2_10_00_48```
   > 
   > MacOS and Linux
   > > The location of the certificates are in 
   > > ```SIMPLELINK_SDK_BASE/tools/cc32xx_tools/certificate-playground```
-
-  Note: *SIMPLELINK_SDK_BASE* is the location where SDK is installed in Module 1 Step 2
+  > > Where ```SIMPLELINK_SDK_BASE``` is usually ```/Applications/ti/simplelink_cc13x2_sdk_2_10_00_48```
 
   The certificates in the SimpleLink CC3220 SDK are in DER format. You need to convert them to PEM format to create a self‐signed code-signing certificate. 
 
   Follow these steps to create a code-signing certificate that is linked to the Texas   Instruments playground certificate hierarchy and meets AWS Certificate Manager and Code Signing for Amazon FreeRTOS criteria. 
  
-3. Create a self**‐**signed code signing certificate
+3. Create a **self**‐**signed** code signing certificate
 
-   In your working directory, use the following text to create a file named *cert_config*. Replace test_signer@amazon.com  with your email address. 
+   In your working directory, ```LAB_REPOPATH/credentials```,use the following text to create a file named *cert_config*. Replace test_signer@amazon.com  with your email address. 
 
    ```
    [ req ]
@@ -80,13 +80,13 @@ In this project, you'll learn how to deploy an over-the-air (OTA) update to a mi
    Run the command below to perform the conversion.
 
    ```bash
+   cp $SIMPLELINK_SDK_BASE/tools/cc32xx_tools/certificate-playground/dummy-root-ca-cert-key .
    openssl rsa -inform DER -in dummy-root-ca-cert-key -out dummy-root-ca-cert-key.pem
    ```
    
    Convert  the Texas Instruments playground *root CA* certificate from DER format to  PEM format. 
 
    The TI playground root CA certificate is located here:
-
 
    > Windows
    > > ```SIMPLELINK_SDK_BASE\tools\cc32xx_tools\certificate-playground/dummy-root-ca-cert```
@@ -97,19 +97,30 @@ In this project, you'll learn how to deploy an over-the-air (OTA) update to a mi
    Run the command below to perform the conversion.
 
    ```bash
+   cp $SIMPLELINK_SDK_BASE/tools/cc32xx_tools/certificate-playground/dummy-root-ca-cert .
    openssl x509 -inform DER -in dummy-root-ca-cert -out dummy-root-ca-cert.pem
    ```
    
    Sign  the CSR with the Texas Instruments *root CA*:
 
    ```bash
-   openssl x509 -extfile cert_config -extensions my_exts  -req -days 365 -in tisigner.csr -CA dummy-root-ca-cert.pem -CAkey dummy-root-ca-cert-key.pem -set_serial 01 -out tisigner.crt.pem -sha1
+   openssl x509 -extfile cert_config                \
+                -extensions my_exts                  \
+                -req -days 365                       \
+                -in tisigner.csr                     \
+                -CA dummy-root-ca-cert.pem           \
+                -CAkey dummy-root-ca-cert-key.pem    \
+                -set_serial 01                       \
+                -out tisigner.crt.pem                \
+                -sha1
    ```
 
    Convert  your code-signing certificate (tisigner.crt.pem) to DER format: 
 
    ```bash
-   openssl x509 -in tisigner.crt.pem -out tisigner.crt.der -outform DER
+   openssl x509 -in tisigner.crt.pem \
+                -out tisigner.crt.der \
+                -outform DER
    ```
    
    Note: You write the tisigner.crt.der certificate onto the TI development board later. 
@@ -131,11 +142,13 @@ Once you generated the certificates from the openssl, you can import them into A
 11. Take a quick look at the contents, and click **Import**
 12. Take note of the ARN in the Details section. You will need the ARN of the certificate in the later when you setup the FreeRTOS OTA job.
 
--Import  the code-signing certificate, private key, and certificate chain into AWS  Certificate Manager: -
+For future reference, you can also use the command-line:
 
--aws acm import-certificate --certificate file://tisigner.crt.pem --private-key file://tisigner.key --certificate-chain file://dummy-root-ca-cert.pem-
-
--This command displays an ARN for your certificate. Record the ARN because you need this ARN when you create an OTA update job. -
+```bash
+aws acm import-certificate --certificate file://tisigner.crt.pem      \
+                           --private-key file://tisigner.key          \
+                           --certificate-chain file://dummy-root-ca-cert.pem
+```
 
 ### Add the OTA Update Demo
 
@@ -165,17 +178,15 @@ That's it! Now we are prepared to start our update.
 
 *To burn the demo application onto your board*
 
-1. On your  Texas Instruments developer board, place the SOP jumper on the middle set  of pins (position = 1) and reset the board. 
-2. Start  Uniflash and from the list of configurations, choose *CC3220SF-LAUNCHXL*,  and then choose *Start Image Creator*. 
-3. Choose *New  Project*. 
-4. On the *Start  new project* page, type a name for your project. Set *Device Type*  to *CC3220SF*, set *Device Mode* to *Develop*, and then  choose *Create Project*. 
+1. On your Texas Instruments developer board, place the SOP jumper on the middle set  of pins (position = 1) and reset the board. 
+2. Switch to the  Uniflash application (last used in Lab 1).
 5. Disconnect  your terminal emulator and choose the *Connect* button on the right  side of the Uniflash application window. 
-6. On the  left, under *Files*, choose *User Files*. 
+6. On the  left, under **Files**, choose **User Files**. 
 7. In the *File*  selector pane, choose the *Add File* icon . 
-8. Browse  to the /Applications/Ti/simplelink_cc32xx_sdk_1_40_01_00/tools/cc32xx_tools/certificate-playground  directory, select dummy-root-ca-cert,  choose *Open*, and then choose *Write*. 
-9. Browse  to the working directory where you created the code-signing certificate  and private key, choose tisigner.crt.der,  choose *Open*, and then choose *Write*. 
-10. From  the *Action* drop-down list, choose *Select MCU Image*, and then  choose *Browse* to choose the firmware image to use write to your  device (*aws_demos.bin*). This file is located in the AmazonFreeRTOS/demos/ti/cc3200_launchpad/ccs/Debug  directory. Choose *Open*. 
-11. In the  file dialog box, confirm the file name is set to *mcuflashimg.bin*.  Select the *Vendor* check box. Under *File Token*, type *1952007250*. Under *Private Key File  Name*, choose *Browse* and then choose tisignerkey from the working directory  where you created the code-signing certificate and private key. Under *Certification  File Name*, choose tisigner.crt.der,  and then choose *Write*. 
+8. Browse  to the ```SIMPLELINK_SDK_BASE/tools/cc32xx_tools/certificate-playground```  directory, select ```dummy-root-ca-cert```,  choose **Open**, and then choose **Write**. 
+9. Browse  to the working directory where you created the code-signing certificate  and private key, choose tisigner.crt.der,  choose **Open**, and then choose **Write**. 
+10. From  the **Action** drop-down list, choose **Select MCU Image**, and then  choose **Browse** to choose the firmware image to use write to your  device (**aws_demos.bin**). This file is located in the AmazonFreeRTOS/demos/ti/cc3200_launchpad/ccs/Debug  directory. Choose **Open**.
+11. In the  file dialog box, confirm the file name is set to ```mcuflashimg.bin```.  Select the *Vendor* check box. Under *File Token*, type ```1952007250```. Under *Private Key File  Name*, choose *Browse* and then choose tisignerkey from the working directory  where you created the code-signing certificate and private key. Under *Certification  File Name*, choose tisigner.crt.der,  and then choose *Write*. 
 12. In the  left pane, under *Files*, select *Trusted Root-Certificate Catalog*.  
 13. Clear  the *Use default Trusted Root-Certificate Catalog* check box. 
 14. Under *Source  File*, choose *Browse*, select *simplelink_cc32xx_sdk_1_40_01_00/tools/certificate-playground\certcatalogPlayGround20160911.lst*,  and then choose *Open*. 
