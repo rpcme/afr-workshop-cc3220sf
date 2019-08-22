@@ -279,7 +279,7 @@ To add OTA update permissions to your OTA service role
 
 1. In the *search box* on the left navigation pane of the IAM console page, type your role's name and then choose it from the list.
 2.  Choose the *Attach policy* button.
-3.  In the Search box, type *AmazonFreeRTOSUpdatex*, choose it in the list of managed policies, and then choose the *Attach policy* button. 
+3.  In the Search box, type *AmazonFreeRTOSUpdate*, choose it in the list of managed policies, and then choose the *Attach policy* button. 
 
  
 To add Amazon S3 permissions to your OTA service role
