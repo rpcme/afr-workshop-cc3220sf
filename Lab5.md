@@ -279,7 +279,7 @@ To add OTA update permissions to your OTA service role
 
 1. In the *search box* on the left navigation pane of the IAM console page, type your role's name and then choose it from the list.
 2.  Choose the *Attach policy* button.
-3.  In the Search box, type *AWSIoTOTAUpdate*, choose it in the list of managed policies, and then choose the *Attach policy* button. 
+3.  In the Search box, type *AmazonFreeRTOSUpdate*, choose it in the list of managed policies, and then choose the *Attach policy* button. 
 
  
 To add Amazon S3 permissions to your OTA service role
@@ -296,7 +296,8 @@ To add Amazon S3 permissions to your OTA service role
           "Effect": "Allow",
           "Action": [
                "s3:GetObjectVersion",
-               "s3:GetObject"
+               "s3:GetObject",
+               "s3:PutObject"
           ],
           "Resource": "arn:aws:s3:::<example-bucket>/*"
      }
@@ -305,6 +306,32 @@ To add Amazon S3 permissions to your OTA service role
 
 5.    Choose *Review policy*.
 6.    Type a name for the policy and choose *Create policy*. 
+
+To add the required IAM permissions to your OTA service role
+
+1. In the search box on the IAM console page, enter the name of your role, and then choose it from the list.
+2. Choose Add inline policy.
+3. Choose the JSON tab.
+4. Copy and paste the following policy document into the text box:
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+            "Effect": "Allow",
+            "Action": [
+                "iam:GetRole",
+                "iam:PassRole"
+            ],
+            "Resource": "arn:aws:iam::<your_account_id>:role/<your_role_name>"
+      }
+    ]
+}
+
+Make sure that you replace <your_account_id> with your AWS account ID, and <your_role_name> with the name of the OTA service role.
+
+5. Choose Review policy.
+6. Enter a name for the policy, and then choose Create policy.
 
 Creating an OTA User Policy 
 
